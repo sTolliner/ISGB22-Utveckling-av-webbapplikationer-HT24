@@ -14,11 +14,37 @@ class GameData  {
     ];
 
     createImgElements() {
+        console.log("create");
+
+        let randomValue = 0;
+        let main = document.querySelector("main");
+        let imgRef = null;
+
+        for(let i = 0; i < 5; i++) {
+            randomValue = Math.floor(Math.random() * 6);
+            console.log(randomValue + 1);
+            let img = document.createElement("img")
+            img.src = oGameDataObject.imgRefs[randomValue];
+            img.alt = "Picture of dice"
+            img.style.width = "10%";
+            img.style.height = "10%";
+
+            main.appendChild(img);
+
+        }
 
     }
 
     removeImgElements() {
+        console.log("remove");
         
+        let main = document.querySelector("main");
+
+        while (main.firstChild) {
+            main.removeChild(main.firstChild);
+        }
+
+
     }
 
 };
@@ -34,6 +60,27 @@ window.addEventListener('DOMContentLoaded', function() {
 
     alert('Tryck b||B för att börja och e||E för att avsluta!');
 
+
+    document.addEventListener("keydown", (event) => {
+        
+        let keyName = event.key;
+
+        if(keyName == "b" || keyName == "B") {
+            clearInterval(oGameDataObject.timerId);
+            console.log("begin");
+            oGameDataObject.timerId = setInterval(function() {
+                oGameDataObject.removeImgElements();
+                oGameDataObject.createImgElements();
+            }, 2000);
+            oGameDataObject.removeImgElements();
+            oGameDataObject.createImgElements();
+        }
+
+        if(keyName == "e" || keyName == "E") {
+            console.log("end");
+            clearInterval(oGameDataObject.timerId);
+        }
+    })
         /*
             1. Lägg till en lyssnar för tangentbordet 
             2. Kontrollera om bokstaven b resp. B är tryckt
